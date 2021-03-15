@@ -2,9 +2,9 @@ package pages;
 
 import io.appium.java_client.MobileElement;
 import io.appium.java_client.android.AndroidDriver;
+import io.appium.java_client.android.AndroidElement;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.support.PageFactory;
-
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
@@ -12,8 +12,8 @@ import java.util.concurrent.TimeUnit;
 
 public class HomePage {
 
-    AndroidDriver driver=null;
-
+    AndroidDriver driver;
+    DesiredCapabilities dc = new DesiredCapabilities();
     public HomePage(AndroidDriver driver){
         this.driver=driver;
         PageFactory.initElements(driver,this);
@@ -21,24 +21,36 @@ public class HomePage {
 
     public void openApplication(){
         try {
-            DesiredCapabilities dc = new DesiredCapabilities();
-            dc.setCapability("deviceName","emulator-5554");
+
+            dc.setCapability("deviceName","emulator-5556");
             dc.setCapability("platformName","Android");
             dc.setCapability("platformVersion","8");
             dc.setCapability("appPackage","com.aphixsoftware.pocketshopapp");
             dc.setCapability("appActivity","com.aphixsoftware.pocketshopapp.MainActivity");
             driver = new AndroidDriver(new URL("http://127.0.0.1:4723/wd/hub"),dc);
             driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+            /*MobileElement el1 = (MobileElement) driver.findElementByXPath("/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.webkit.WebView/android.webkit.WebView/android.view.View[3]/android.view.View/android.widget.EditText");
+            el1.sendKeys("TEST");
+            MobileElement el2 = (MobileElement) driver.findElementByXPath("/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.webkit.WebView/android.webkit.WebView/android.view.View[4]/android.view.View/android.widget.EditText");
+            //el2.sendKeys(pw);
+            el2.click();
+            el2.sendKeys("testo");  */
+            System.out.println();
         } catch (MalformedURLException e) {
             e.printStackTrace();
         }
     }
 
-    public void verifyLogIn(String u, String pw){
-        MobileElement el1 = (MobileElement) driver.findElementByXPath("//android.webkit.WebView[@content-desc=\"PocketShop\"]/android.view.View[3]/android.view.View/android.widget.EditText");
+    public void verifyLogIn(String u, String pw) throws MalformedURLException {
+        driver = new AndroidDriver(new URL("http://127.0.0.1:4723/wd/hub"),dc);
+        MobileElement el1 = (MobileElement) driver.findElementByXPath("/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.webkit.WebView/android.webkit.WebView/android.view.View[3]/android.view.View/android.widget.EditText");
+        el1.sendKeys(u);
+        //MobileElement el1 = (MobileElement) driver.findElementByXPath("//android.webkit.WebView[@content-desc=\"PocketShop\"]/android.view.View[3]/android.view.View/android.widget.EditText");
         el1.click();
         el1.sendKeys(u);
-        MobileElement el2 = (MobileElement) driver.findElementByXPath("//android.webkit.WebView[@content-desc=\"PocketShop\"]/android.view.View[4]/android.view.View/android.widget.EditText");
+        //MobileElement el2 = (MobileElement) driver.findElementByXPath("//android.webkit.WebView[@content-desc=\"PocketShop\"]/android.view.View[4]/android.view.View/android.widget.EditText");
+        MobileElement el2 = (MobileElement) driver.findElementByXPath("/hierarchy/android.widget.FrameLayout/android.widget.LinearLayout/android.widget.FrameLayout/android.webkit.WebView/android.webkit.WebView/android.view.View[4]/android.view.View/android.widget.EditText");
+        //el2.sendKeys(pw);
         el2.click();
         el2.sendKeys(pw);
     }
@@ -75,3 +87,4 @@ public class HomePage {
 
 
 }
+
